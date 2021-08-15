@@ -8,7 +8,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.loader import ItemLoader
 from bs4 import BeautifulSoup
 
-class Artículo(Item):
+class Articulo(Item):
      id = Field()
      titulo = Field()
      modelo = Field()
@@ -64,7 +64,7 @@ class PcFactoryCrawler(CrawlSpider):
         return nuevotext
  
      def parse_items(self, response):
-         item = ItemLoader(Artículo(), response)
+         item = ItemLoader(Articulo(), response)
          item.add_xpath('id', '//*[@id="app"]/div[4]/div/div[6]/div[3]/div/div[2]/div/div/div[2]/text()')
          item.add_xpath('titulo', '//*[@id="id_ficha_producto"]/div[3]/div[2]/div[1]/text()',MapCompose(self.Limpiartext))
          item.add_xpath('modelo', '//*[@id="app"]/div[4]/div/div[6]/div[3]/div/div[5]/div/div/div[2]/text()',MapCompose(self.Limpiartext))
