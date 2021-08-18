@@ -57,16 +57,20 @@ class PcFactoryCrawler(CrawlSpider):
              LinkExtractor(
                  allow=r'-notebook-'
              ), follow=True, callback='parse_items'),
+             Rule(   #Paginacion vertical
+             LinkExtractor(
+                 allow=r'-apple-macbook-'
+             ), follow=True, callback='parse_items'),
      )
 
      def Limpiartext(self, texto):
-        nuevotext = texto.replace('™', '').replace('\r', ' ').replace('\t', ' ').replace('á', 'a').replace('é', 'e').replace('í', ' i').replace('ó', 'o').replace('ú', 'u').replace('Á', 'A').replace('É', 'E').replace('Í', 'I').replace('Ó', 'O').replace('Ú','U').replace('®', '').replace('"', ' ').strip()
+        nuevotext = texto.replace('™', '').replace('\r', ' ').replace('\t', ' ').replace('á', 'a').replace('é', 'e').replace('í', ' i').replace('ó', 'o').replace('ú', 'u').replace('Á', 'A').replace('É', 'E').replace('Í', 'I').replace('Ó', 'O').replace('Ú','U').replace('®', '').replace('"', ' ').replace('ᵉ', '').strip()
         return nuevotext
  
      def parse_items(self, response):
          item = ItemLoader(Articulo(), response)
          item.add_xpath('id', '//*[@id="app"]/div[4]/div/div[6]/div[3]/div/div[2]/div/div/div[2]/text()')
-         item.add_xpath('titulo', '//*[@id="id_ficha_producto"]/div[3]/div[2]/div[1]/text()',MapCompose(self.Limpiartext))
+         item.add_xpath('titulo', '//div[@class="product-single__description"]/div[@class="paragraph color-dark-2"]/text()',MapCompose(self.Limpiartext))
          item.add_xpath('modelo', '//*[@id="app"]/div[4]/div/div[6]/div[3]/div/div[5]/div/div/div[2]/text()',MapCompose(self.Limpiartext))
          item.add_xpath('marca', '//*[@id="app"]/div[4]/div/div[6]/div[3]/div/div[3]/div/div/div[2]/text()',MapCompose(self.Limpiartext))
          item.add_xpath('procesador', '//*[@id="app"]/div[4]/div/div[6]/div[3]/div/div[8]/div/div/div[2]/text()',MapCompose(self.Limpiartext))
